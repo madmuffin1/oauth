@@ -105,17 +105,15 @@ namespace OAuth
 
             parameters.Sort((l, r) => l.Name.CompareTo(r.Name));
 
-            var count = 0;
-
             foreach (var parameter in parameters.Where(parameter =>
                                                        !IsNullOrBlank(parameter.Name) &&
                                                        !IsNullOrBlank(parameter.Value) &&
-                                                       (parameter.Name.StartsWith("oauth_") || parameter.Name.StartsWith("x_auth_" ))))
+                                                       (parameter.Name.StartsWith("oauth_") || parameter.Name.StartsWith("x_auth_"))))
             {
-                count++;
-                var format = count < parameters.Count ? "{0}=\"{1}\"," : "{0}=\"{1}\"";
-                sb.AppendFormat(format, parameter.Name, parameter.Value);
+                sb.AppendFormat("{0}=\"{1}\",", parameter.Name, parameter.Value);
             }
+
+            sb.Remove(sb.Length - 1, 1);
 
             var authorization = sb.ToString();
             return authorization;
@@ -196,7 +194,7 @@ namespace OAuth
             foreach (var parameter in parameters.Where(parameter =>
                                                        !IsNullOrBlank(parameter.Name) &&
                                                        !IsNullOrBlank(parameter.Value) &&
-                                                       (parameter.Name.StartsWith("oauth_") || parameter.Name.StartsWith("x_auth_" ))))
+                                                       (parameter.Name.StartsWith("oauth_") || parameter.Name.StartsWith("x_auth_"))))
             {
                 count++;
                 var format = count < parameters.Count ? "{0}={1}&" : "{0}={1}";
